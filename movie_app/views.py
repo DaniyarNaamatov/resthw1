@@ -8,7 +8,7 @@ from movie_app.serializers import *
 @api_view (['GET'])
 def director_list_view(request):
     director = Director.objects.all()
-    serializer = DirectorListSerializer(director, many=True)
+    serializer = DirectorSerializers(director, many=True)
     return Response(data=serializer.data)
 
 
@@ -19,7 +19,7 @@ def director_detail_view(request, id):
     except Director.DoesNotExist:
         return Response(data={'Error':'Product not found'},
                         status=status.HTTP_404_NOT_FOUND)
-    data = DirectorDetailSerializer(director).data
+    data = DirectorCountSerializer(director).data
     return Response(data=data)
 
 
@@ -27,7 +27,7 @@ def director_detail_view(request, id):
 @api_view (['GET'])
 def movie_list_view(request):
     movies = Movie.objects.all()
-    serializer = MovieListSerializer(movies, many=True)
+    serializer = MovieSerializers(movies, many=True)
     return Response(data=serializer.data)
 
 
@@ -39,7 +39,7 @@ def movie_detail_view(request, id):
     except Movie.DoesNotExist:
         return Response(data={'Error':'Product not found'},
                         status=status.HTTP_404_NOT_FOUND)
-    data = MovieListSerializer(movies).data
+    data = MovieSerializers(movies).data
     return Response(data=data)
 
 
@@ -47,7 +47,7 @@ def movie_detail_view(request, id):
 @api_view (['GET'])
 def review_list_view(request):
     review = Review.objects.all()
-    serializer = ReviewListSerializer(review, many=True)
+    serializer = ReviewSerializers(review, many=True)
     return Response(data=serializer.data)
 
 
@@ -58,5 +58,11 @@ def review_detail_view(request, id):
     except Review.DoesNotExist:
         return Response(data={'Error':'Product not found'},
                         status=status.HTTP_404_NOT_FOUND)
-    data = ReviewDetailSerializer(review).data
+    data = ReviewSerializers(review).data
+    return Response(data=data)
+
+@api_view(['GET'])
+def movies_reviews_view(request):
+    movie_reviews = Movie.objects.all()
+    data = MovieSerializers(movie_reviews, many=True).data
     return Response(data=data)

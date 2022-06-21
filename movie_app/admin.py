@@ -13,6 +13,6 @@ class ReviewAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'title')
     search_fields = ('title',)
 
-admin.site.register(Movie, MovieAdmin)
+admin.site.register(Movie)
 admin.site.register(Director)
 admin.site.register(Review)
