@@ -20,7 +20,6 @@ from movie_app import views
 
 
 urlpatterns = [
-    path("jet/", include("jet.urls", "jet")),
     path("admin/", admin.site.urls),
     path("api/v1/directors/", views.director_list_view),
     path("api/v1/directors/<int:id>/", views.director_detail_view),
@@ -29,4 +28,6 @@ urlpatterns = [
     path("api/v1/reviews/", views.review_list_view),
     path("api/v1/reviews/<int:id>/", views.review_detail_view),
     path("api/v1/movies/reviews/", views.movies_reviews_view),
+    path('api/v1/register/', views.registration),
+    path('api/v1/login/', views.authorization)
 ]

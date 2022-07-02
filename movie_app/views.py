@@ -10,6 +10,10 @@ from movie_app.serializers import (
 )
 from movie_app.models import Director, Movie, Review
 from rest_framework import status
+from django.contrib.auth.models import User
+from movie_app.serializers import UserValidateSerializer, UserAuthorizationSerializer
+from django.contrib.auth import authenticate
+from rest_framework.authtoken.models import Token
 
 
 @api_view(["GET", "POST"])
@@ -137,3 +141,29 @@ def movies_reviews_view(request):
     movie_reviews = Movie.objects.all()
     data = MovieSerializers(movie_reviews, many=True).data
     return Response(data=data)
+
+
+
+@api_view(['POST'])
+def registration(request):
+    serializer = UserValidateSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    User.objects.create_user(**serializer.validated_data)
+    return Response(data={'message': 'User created'})
+
+
+@api_view(['POST'])
+def authorization(request):
+    serializer = UserAuthorizationSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    username = request.data.get('username')
+    password = request.data.get('password')
+    user = authenticate(username=username, password=password)
+    if user:
+        try:
+            token = Token.objects.get(user=user)
+        except Token.DoesNotExist:
+            token = Token.objects.create(user=user)
+        return Response(data={'key': token.key})
+    return Response(data={'message': 'User not found'},
+                    status=404)

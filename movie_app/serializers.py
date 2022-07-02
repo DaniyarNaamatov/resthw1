@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from movie_app.models import Director, Movie, Review
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
+
 
 
 class DirectorSerializers(serializers.ModelSerializer):
@@ -89,6 +91,37 @@ class ReviewValidateSerializer(serializers.Serializer):
         if Review.objects.filter(id=movie_id).count() == 0:
             raise ValidationError("Movie not found")
         return movie_id
+
+
+
+class UserValidateSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
+    def validate_username(self, username):
+        if User.objects.filter(username=username):
+            raise ValidationError('User already exists!!!')
+        return username
+
+class UserAuthorizationSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     # def validate_movie_id(self, movie_id):
     #     if Review.objects.filter(id=movie_id).count() == 0:
