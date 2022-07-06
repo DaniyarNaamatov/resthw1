@@ -17,17 +17,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from movie_app import views
+from users import views as user_views
+from . import swagger
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/v1/directors/", views.director_list_view),
-    path("api/v1/directors/<int:id>/", views.director_detail_view),
-    path("api/v1/movies/", views.movie_list_view),
-    path("api/v1/movies/<int:id>/", views.movie_detail_view),
-    path("api/v1/reviews/", views.review_list_view),
-    path("api/v1/reviews/<int:id>/", views.review_detail_view),
+    path("api/v1/directors/", views.DirectorListCreateAPIView.as_view()),
+    path("api/v1/directors/<int:id>/", views.DirectorDetailUpdateDeleteAPIView.as_view()),
+    path("api/v1/movies/", views.MovieListCreateAPIView.as_view()),
+    path("api/v1/movies/<int:id>/", views.MovieDetailUpdateDeleteAPIView.as_view()),
+    path("api/v1/reviews/", views.ReviewListCreateAPIView.as_view()),
+    path("api/v1/reviews/<int:id>/", views.ReviewDetailUpdateDeleteAPIView.as_view()),
     path("api/v1/movies/reviews/", views.movies_reviews_view),
-    path('api/v1/register/', views.registration),
-    path('api/v1/login/', views.authorization)
+    path('api/v1/register/', user_views.registration),
+    path('api/v1/login/', user_views.authorization)
 ]
+urlpatterns += swagger.urlpatterns

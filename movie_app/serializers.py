@@ -2,6 +2,9 @@ from rest_framework import serializers
 from movie_app.models import Director, Movie, Review
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+from drf_writable_nested import WritableNestedModelSerializer
+
+
 
 
 
@@ -17,13 +20,13 @@ class ReviewSerializers(serializers.ModelSerializer):
         fields = "text stars movie".split()
 
 
-class MovieSerializers(serializers.ModelSerializer):
+class MovieSerializers(WritableNestedModelSerializer,serializers.ModelSerializer):
     director = DirectorSerializers()
-    reviews = ReviewSerializers(many=True)
+    # reviews = ReviewSerializers(many=True, read_only=True)
 
     class Meta:
         model = Movie
-        fields = "id title description duration director reviews rating".split()
+        fields = "id title description duration director rating".split()
 
 
 class DirectorCountSerializer(serializers.ModelSerializer):
@@ -61,6 +64,7 @@ class MovieValidateSerializer(serializers.Serializer):
     description = serializers.CharField()
     duration = serializers.IntegerField(max_value=1000)
     director = serializers.IntegerField()
+    reviews = serializers.CharField(required=False)
 
     @property
     def movie_data_director(self):
@@ -75,7 +79,7 @@ class MovieValidateSerializer(serializers.Serializer):
 
 class ReviewValidateSerializer(serializers.Serializer):
     text = serializers.CharField(max_length=100)
-    movie = serializers.IntegerField(required=False, allow_null=True, default=None)
+    movie = serializers.IntegerField(required=False, allow_null=True, default=None, read_only=True)
     stars = serializers.IntegerField(min_value=1, max_value=5)
 
     @property

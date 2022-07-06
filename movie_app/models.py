@@ -24,10 +24,10 @@ class Movie(models.Model):
     def __str__(self):
         return self.title
 
-    @property
-    def reviews(self):
-        review = Review.objects.filter(movie=self)
-        return [{"text"} for i in review]
+    # @property
+    # def reviews(self):
+    #     review = Review.objects.filter(movie=self)
+    #     return [{"text"} for i in review]
 
     @property
     def rating(self):
