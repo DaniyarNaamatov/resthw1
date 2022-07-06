@@ -47,7 +47,7 @@ class MovieListCreateAPIView(ListCreateAPIView):
     search_fields = ['title']
 
 
-class MovieDetailUpdateDeleteAPIView(ListCreateAPIView):
+class MovieDetailUpdateDeleteAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializers
     lookup_field = 'id'
