@@ -20,7 +20,7 @@ class ReviewSerializers(serializers.ModelSerializer):
         fields = "text stars movie".split()
 
 
-class MovieSerializers(WritableNestedModelSerializer,serializers.ModelSerializer):
+class MovieSerializers(WritableNestedModelSerializer, serializers.ModelSerializer):
     director = DirectorSerializers()
     # reviews = ReviewSerializers(many=True, read_only=True)
 
