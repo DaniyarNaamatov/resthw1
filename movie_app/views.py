@@ -68,6 +68,8 @@ class ReviewListCreateAPIView(ListCreateAPIView):
 class ReviewDetailUpdateDeleteAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializers
+    lookup_field = 'id'
+
 
 
 
